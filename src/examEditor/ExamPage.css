@@ -1,0 +1,67 @@
+.exam-page {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #2d2d2d;
+    color: #fff;
+  }
+  
+  .split-container {
+    display: flex;
+    height: calc(100vh - 50px);
+  }
+  
+  .left-pane, .right-pane {
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  .left-pane {
+    background: #f7f7f7;
+    border-right: 1px solid #ddd;
+  }
+  
+  .right-pane {
+    background: #fff;
+  }
+  
+  .editor-toolbar {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  
+  .editor-toolbar select {
+    margin-left: 10px;
+    padding: 5px;
+  }
+  
+  .action-buttons {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    opacity: 0.9;
+  }
+  
+  button:active {
+    opacity: 0.8;
+  }
+  

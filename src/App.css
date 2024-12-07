@@ -1,42 +1,61 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	scroll-behavior: smooth;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+body {
+	background: var(--gradient-bg);
+	font-family: var(--font-family);
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+a {
+	color: unset;
+	text-decoration: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+a:hover,
+button:hover {
+	cursor: pointer;
 }
 
-.card {
-  padding: 2em;
+.section-type {
+	margin: 2rem 6rem;
+	height: 75vh;
 }
 
-.read-the-docs {
-  color: #888;
+.title-heading {
+	color: var(--color-heading);
+}
+
+.gradient-bg {
+	/* ff 3.6+ */
+	background: -moz-linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+
+	/* safari 5.1+,chrome 10+ */
+	background: -webkit-linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+
+	/* opera 11.10+ */
+	background: -o-linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+
+	/* ie 6-9 */
+	filter: progid:DXImageTransform.Microsoft.gradient(
+			startColorstr='#F3FAFF',
+			endColorstr='#F8FCFF',
+			GradientType=0
+		);
+
+	/* ie 10+ */
+	background: -ms-linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+
+	/* global 94%+ browsers support */
+	background: linear-gradient(90deg, #f8fcff 0%, #f3faff 100%);
+}
+
+.gradient-text {
+	background: var(--gradient-text);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
