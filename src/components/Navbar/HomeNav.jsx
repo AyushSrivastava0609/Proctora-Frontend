@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from '../../assets/logo.svg';
 import './HomeNav.css';
+import LoginForm from '../LoginAuth/LoginForm';
 
 const NavLinks = () => (
 	<>
@@ -20,7 +21,9 @@ const NavLinks = () => (
 			<a href="/">Contact Us</a>
 		</p>
 		<p>
-			<a href="/login">Login</a>
+			<a href="/login">
+				login
+			</a>
 		</p>
 	</>
 );
