@@ -1,16 +1,23 @@
+import React from 'react';
 import { Lock, Mail } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 export default function LoginForm() {
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get('role') || 'student'; // Default to 'student' if not provided
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-md space-y-6 bg-white p-6 rounded-lg shadow-md">
         <div className="text-center">
-          <h2 className="text-3xl font-bold text-gray-900">Welcome Back</h2>
-          <p className="mt-2 text-gray-600">Login to your account</p>
+          <h2 className="text-3xl font-bold text-gray-900">
+            Welcome Back - {role === 'student' ? 'Student' : 'Educator'}
+          </h2>
+          <p className="mt-2 text-gray-600">Login to your {role} account</p>
         </div>
-
         <form className="space-y-4">
+          {/* Email Field */}
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Email Address
@@ -29,6 +36,7 @@ export default function LoginForm() {
             </div>
           </div>
 
+          {/* Password Field */}
           <div>
             <label htmlFor="password" className="block text-sm font-medium text-gray-700">
               Password
@@ -47,19 +55,24 @@ export default function LoginForm() {
             </div>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700"
           >
             Login
           </button>
 
-          <p className="text-center text-sm text-gray-600">
+          {/* Link to Signup Page */}
+          <div className="text-center text-sm text-gray-600 mt-4">
             Don't have an account?{' '}
-            <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500">
-              Sign up here
+            <Link
+              to={`/signup?role=${role}`}
+              className="font-medium text-blue-600 hover:text-blue-500"
+            >
+              Sign Up here
             </Link>
-          </p>
+          </div>
         </form>
       </div>
     </div>

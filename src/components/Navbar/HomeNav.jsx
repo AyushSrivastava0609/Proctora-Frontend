@@ -21,7 +21,7 @@ const NavLinks = () => (
 			<a href="/">Contact Us</a>
 		</p>
 		<p>
-			<a href="/login">
+			<a href="/role-selection">
 				login
 			</a>
 		</p>

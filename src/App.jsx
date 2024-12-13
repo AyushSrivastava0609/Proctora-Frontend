@@ -40,60 +40,62 @@
 //   )
 // }
 
-import React from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import RoleSelection from './components/RoleSelection/RoleSelection.jsx';
+import LoginForm from './components/LoginAuth/LoginForm';
+import SignUpForm from './components/LoginAuth/SignupForm';
+import HomeNav from './components/Navbar/HomeNav';
 import { Landing, CreateTest } from './Containers';
-import HomeNav from './components/Navbar/HomeNav'; 
-import LoginForm from './components/LoginAuth/LoginForm'; 
-import SignUpForm from './components/LoginAuth/SignupForm'; // Import the SignUp component
-import './App.css';
 
-// Define routes
 const router = createBrowserRouter([
-	{
-		path: '/',
-		element: (
-			<>
-				<HomeNav />
-				<Landing />
-			</>
-		),
-	},
-	{
-		path: '/create',
-		element: (
-			<>
-				<HomeNav />
-				<CreateTest />
-			</>
-		),
-	},
-	{
-		path: '/login',
-		element: (
-			<>
-				<HomeNav />
-				<LoginForm />
-			</>
-		),
-	},
-	{
-		path: '/signup', // New route for SignUp
-		element: (
-			<>
-				<HomeNav />
-				<SignUpForm />
-			</>
-		),
-	},
+  {
+    path: '/',
+    element: (
+      <>
+        <HomeNav />
+        <Landing />
+      </>
+    ),
+  },
+  {
+    path: '/create',
+    element: (
+      <>
+        <HomeNav />
+        <CreateTest />
+      </>
+    ),
+  },
+  {
+    path: '/role-selection',
+    element: <RoleSelection />,
+  },
+  {
+    path: '/login',
+    element: (
+      <>
+        <HomeNav />
+        <LoginForm />
+      </>
+    ),
+  },
+  {
+    path: '/signup',
+    element: (
+      <>
+        <HomeNav />
+        <SignUpForm />
+      </>
+    ),
+  },
 ]);
 
 const App = () => {
-	return (
-		<div className="App">
-			<RouterProvider router={router} />
-		</div>
-	);
+  return (
+    <div className="App">
+      <RouterProvider router={router} />
+    </div>
+  );
 };
 
 export default App;
