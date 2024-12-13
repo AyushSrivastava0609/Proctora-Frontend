@@ -1,154 +1,177 @@
-import React, { useState } from 'react'
-import './CreateTest.css'
+import React, { useState } from 'react';
+import { FiPlus } from 'react-icons/fi';
+import Papa from 'papaparse';
+import DatePicker from 'react-datepicker';  // Import the DatePicker
+import 'react-datepicker/dist/react-datepicker.css';  // Import the CSS for DatePicker
+import './CreateTest.css';
 
-export default function CreateTest() {
-  const [candidates, setCandidates] = useState([])
-  const [newEmail, setNewEmail] = useState('')
-  const [testName, setTestName] = useState('')
-  const [duration, setDuration] = useState(60)
-  const [startDate, setStartDate] = useState('')
-  const [endDate, setEndDate] = useState('')
-  const [description, setDescription] = useState('')
-  const [testType, setTestType] = useState('')
-  const [emailReport, setEmailReport] = useState('')
+const CreateTest = () => {
+  const [formData, setFormData] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    candidates: [],
+    newEmail: '',
+    csvFile: null
+  });
 
-  const addCandidate = () => {
-    if (newEmail && !candidates.includes(newEmail)) {
-      setCandidates([...candidates, newEmail])
-      setNewEmail('')
+  // Handle adding a new candidate manually
+  const handleAddCandidate = () => {
+    if (formData.newEmail && !formData.candidates.includes(formData.newEmail)) {
+      setFormData({
+        ...formData,
+        candidates: [...formData.candidates, formData.newEmail],
+        newEmail: ''
+      });
     }
-  }
+  };
 
-  const removeCandidate = (email) => {
-    setCandidates(candidates.filter(c => c !== email))
-  }
+  // Handle CSV file upload
+  const handleCsvUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFormData({
+        ...formData,
+        csvFile: file
+      });
+      Papa.parse(file, {
+        complete: (result) => {
+          // Assuming the emails are in the first column of the CSV
+          const emails = result.data.map(row => row[0]).filter(email => email);
+          setFormData(prevState => ({
+            ...prevState,
+            candidates: [...prevState.candidates, ...emails]
+          }));
+        },
+        header: false,
+        skipEmptyLines: true
+      });
+    }
+  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // Handle form submission here
-    console.log('Form submitted', { testName, duration, startDate, endDate, description, testType, emailReport, candidates })
-  }
+  // Trigger the hidden file input click
+  const handleImportCsvClick = () => {
+    document.getElementById('csv-file-input').click();
+  };
 
   return (
-    <div className="create-test">
-      <h1>Create New Test</h1>
-      
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="testName">Test Name</label>
-          <input
-            id="testName"
-            type="text"
-            value={testName}
-            onChange={(e) => setTestName(e.target.value)}
-            placeholder="Enter test name"
-            required
-          />
-        </div>
+    <div className="create-test-container">
+      <div className="header">
+        <br /><br /><br />
+        <h1>Create New Test</h1>
+      </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="duration">Test Duration (minutes)</label>
-            <input
-              id="duration"
-              type="number"
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              required
-            />
+      <div className="tabs">
+        <button className="tab active">Overview</button>
+        <button className="tab">Questions</button>
+        <button className="publish-btn">Publish</button>
+      </div>
+
+      <div className="form-container">
+        <div className="form-group">
+          <div className="input-group">
+            <label>Test Name</label>
+            <input type="text" placeholder="My Sample Test" className="form-input" />
           </div>
-          <div className="form-group">
-            <label htmlFor="startDate">Starts On</label>
-            <input
-              id="startDate"
-              type="datetime-local"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="endDate">Ends On</label>
-            <input
-              id="endDate"
-              type="datetime-local"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
-              required
-            />
+          <div className="input-group">
+            <label>Test Duration</label>
+            <div className="duration-input">
+              <input type="number" placeholder="60" className="form-input" />
+              <span>mins</span>
+            </div>
           </div>
         </div>
 
         <div className="form-group">
-          <label htmlFor="description">Test Description</label>
-          <textarea
-            id="description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter test description"
-          ></textarea>
+          <div className="input-group">
+            <label>Starts On</label>
+            <DatePicker
+              selected={formData.startDate}
+              onChange={date => setFormData({ ...formData, startDate: date })}
+              showTimeSelect
+              dateFormat="MMM d, yyyy h:mm aa"
+              className="form-input"
+            />
+          </div>
+          <div className="input-group">
+            <label>Ends On</label>
+            <DatePicker
+              selected={formData.endDate}
+              onChange={date => setFormData({ ...formData, endDate: date })}
+              showTimeSelect
+              dateFormat="MMM d, yyyy h:mm aa"
+              className="form-input"
+            />
+          </div>
         </div>
 
-        <div className="form-row">
-          <div className="form-group">
-            <label htmlFor="testType">Test Type</label>
-            <select
-              id="testType"
-              value={testType}
-              onChange={(e) => setTestType(e.target.value)}
-              required
-            >
-              <option value="">Select test type</option>
-              <option value="invite">Invite Only</option>
-              <option value="open">Open to anyone with link</option>
+        <div className="form-group">
+          <div className="input-group full-width">
+            <label>Test Description</label>
+            <textarea className="form-input" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div className="form-group">
+          <div className="input-group">
+            <label>Test Type</label>
+            <select className="form-input">
+              <option>Invite Only </option>
+              <option>Open to anyone with link</option>
             </select>
           </div>
-          <div className="form-group">
-            <label htmlFor="emailReport">Email Report to Candidate?</label>
-            <select
-              id="emailReport"
-              value={emailReport}
-              onChange={(e) => setEmailReport(e.target.value)}
-              required
-            >
-              <option value="">Select option</option>
-              <option value="yes">Yes</option>
-              <option value="no">No</option>
+          <div className="input-group">
+            <label>Email Report to Candidate?</label>
+            <select className="form-input">
+              <option>Yes</option>
+              <option>No</option>
             </select>
           </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="candidateEmail">Add Candidates' Emails</label>
-          <div className="email-input">
+        <div className="candidates-section">
+          <label>Add Candidates' Emails</label>
+          <div className="email-input-container">
             <input
-              id="candidateEmail"
               type="email"
-              value={newEmail}
-              onChange={(e) => setNewEmail(e.target.value)}
-              placeholder="Enter candidate email"
+              value={formData.newEmail}
+              onChange={(e) => setFormData({ ...formData, newEmail: e.target.value })}
+              placeholder="candidate.xyz18@vit.edu"
+              className="form-input"
             />
-            <button type="button" onClick={addCandidate}>Add</button>
+            <button onClick={handleAddCandidate} className="add-email-btn">
+              <FiPlus />
+            </button>
           </div>
+
+          {/* Hidden CSV file input */}
+          <input
+            id="csv-file-input"
+            type="file"
+            accept=".csv"
+            onChange={handleCsvUpload}
+            className="import-csv-input"
+            style={{ display: 'none' }}  // Hide the file input
+          />
+          <button
+            type="button"
+            className="import-csv-btn"
+            onClick={handleImportCsvClick}
+          >
+            Import from CSV
+          </button>
         </div>
 
-        <div className="form-group">
-          <label>List of Candidates invited ({candidates.length})</label>
+        {formData.candidates.length > 0 && (
           <div className="candidates-list">
-            {candidates.map((email, index) => (
-              <div key={index} className="candidate-item">
-                <span>{email}</span>
-                <button type="button" onClick={() => removeCandidate(email)}>Remove</button>
-              </div>
+            <h3>List of Candidates invited ({formData.candidates.length})</h3>
+            {formData.candidates.map((email, index) => (
+              <div key={index} className="candidate-email">{email}</div>
             ))}
           </div>
-        </div>
-
-        <div className="form-actions">
-          <button type="submit">Publish</button>
-        </div>
-      </form>
+        )}
+      </div>
     </div>
-  )
-}
+  );
+};
 
+export default CreateTest;
